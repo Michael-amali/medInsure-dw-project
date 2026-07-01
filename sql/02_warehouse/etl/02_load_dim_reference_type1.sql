@@ -1,5 +1,9 @@
 SET search_path TO dw, source_oltp, public;
 
+-- ETL step: 2 of 6
+-- Depends on: 01_load_dim_date.sql, oltp_seed_data.sql
+-- Layer: warehouse ETL
+
 INSERT INTO dw.dim_plan (plan_id, plan_name, plan_type, annual_deductible, oop_max, is_active)
 SELECT 
     pt.plan_id,

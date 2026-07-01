@@ -16,7 +16,7 @@ sql/
 ├── 01_source/          OLTP DDL and synthetic seed data
 ├── 02_warehouse/       DW DDL and ETL loads
 │   ├── ddl/
-│   └── etl/
+│   └── etl/            Numbered 01–06 (run in order)
 ├── 03_analytics/       8 business analytical queries
 ├── 04_quality/         Data quality checks
 └── 05_optimization/    EXPLAIN plans and materialized views
@@ -38,12 +38,12 @@ Run scripts in order against PostgreSQL 14+ using `psql -v ON_ERROR_STOP=1 -f <f
 | 3 | `sql/01_source/oltp_seed_data.sql` | No (inserts) |
 | 4 | `sql/02_warehouse/ddl/dimensions.sql` | No |
 | 5 | `sql/02_warehouse/ddl/facts_and_support.sql` | No |
-| 6 | `sql/02_warehouse/etl/load_dim_date.sql` | No |
-| 7 | `sql/02_warehouse/etl/load_dim_reference_type1.sql` | No |
-| 8 | `sql/02_warehouse/etl/load_dim_member_scd2.sql` | No |
-| 9 | `sql/02_warehouse/etl/load_dim_provider_scd2.sql` | No |
-| 10 | `sql/02_warehouse/etl/load_fact_claim.sql` | No (incremental) |
-| 11 | `sql/02_warehouse/etl/load_fact_claim_line.sql` | No |
+| 6 | `sql/02_warehouse/etl/01_load_dim_date.sql` | No |
+| 7 | `sql/02_warehouse/etl/02_load_dim_reference_type1.sql` | No |
+| 8 | `sql/02_warehouse/etl/03_load_dim_member_scd2.sql` | No |
+| 9 | `sql/02_warehouse/etl/04_load_dim_provider_scd2.sql` | No |
+| 10 | `sql/02_warehouse/etl/05_load_fact_claim.sql` | No (incremental) |
+| 11 | `sql/02_warehouse/etl/06_load_fact_claim_line.sql` | No |
 | 12 | `sql/03_analytics/01_top_providers_yoy.sql` … `08_provider_ytd_cumulative.sql` | Read-only |
 | 13 | `sql/04_quality/data_quality_checks.sql` | Read-only |
 | 14 | `sql/05_optimization/explain_query_01_provider_yoy.sql` | Read-only |

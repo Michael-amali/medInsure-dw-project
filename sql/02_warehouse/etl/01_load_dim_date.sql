@@ -1,5 +1,9 @@
 SET search_path TO dw, source_oltp, public;
 
+-- ETL step: 1 of 6
+-- Depends on: dimensions.sql (dim_date DDL), oltp_seed_data.sql
+-- Layer: warehouse ETL
+
 INSERT INTO dim_date
 SELECT
     TO_CHAR(d, 'YYYYMMDD')::INT AS date_key,

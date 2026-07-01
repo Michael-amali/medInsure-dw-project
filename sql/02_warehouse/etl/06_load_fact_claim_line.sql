@@ -1,5 +1,9 @@
 SET search_path TO dw, source_oltp, public;
 
+-- ETL step: 6 of 6
+-- Depends on: 05_load_fact_claim.sql (fact_claim must exist for claim_key lookup)
+-- Layer: warehouse ETL
+
 INSERT INTO dw.fact_claim_line (
     claim_key, claim_id, claim_line_number, date_key, procedure_key, diagnosis_key,
     service_date, place_of_service, units, billed_amount, allowed_amount,

@@ -1,5 +1,9 @@
 SET search_path TO dw, source_oltp, public;
 
+-- ETL step: 3 of 6
+-- Depends on: oltp_seed_data.sql, 02_load_dim_reference_type1.sql (recommended)
+-- Layer: warehouse ETL
+
 -- 1. Stage current state from OLTP + history
 CREATE TEMP TABLE stg_member AS
 WITH latest_plan AS (

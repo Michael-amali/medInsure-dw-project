@@ -1,5 +1,9 @@
 SET search_path TO dw, source_oltp, public;
 
+-- ETL step: 5 of 6
+-- Depends on: 01_load_dim_date.sql, 03_load_dim_member_scd2.sql, 04_load_dim_provider_scd2.sql
+-- Layer: warehouse ETL
+
 DO $$
 DECLARE
     v_hwm TIMESTAMP;

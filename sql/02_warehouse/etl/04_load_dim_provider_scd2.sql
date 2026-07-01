@@ -1,5 +1,9 @@
 SET search_path TO dw, source_oltp, public;
 
+-- ETL step: 4 of 6
+-- Depends on: oltp_seed_data.sql
+-- Layer: warehouse ETL
+
 CREATE TEMP TABLE stg_provider AS
 WITH latest_network AS (
     SELECT DISTINCT ON (provider_id)
