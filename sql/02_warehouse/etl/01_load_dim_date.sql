@@ -30,3 +30,10 @@ ON CONFLICT (date_key) DO NOTHING;
 UPDATE dim_date SET is_us_holiday = TRUE, holiday_name = 'New Years Day' WHERE month_number = 1 AND day_of_month = 1;
 UPDATE dim_date SET is_us_holiday = TRUE, holiday_name = 'Independence Day' WHERE month_number = 7 AND day_of_month = 4;
 UPDATE dim_date SET is_us_holiday = TRUE, holiday_name = 'Christmas' WHERE month_number = 12 AND day_of_month = 25;
+
+
+
+-- Testing purposes
+-- SET search_path TO dw;
+
+-- SELECT * FROM dw.dim_date

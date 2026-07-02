@@ -144,11 +144,14 @@ SELECT
         WHEN random() < 0.90 THEN '2025-01-01'::DATE + (random() * 364)::INT
         ELSE '2024-01-01'::DATE + (random() * 364)::INT
     END AS service_date,
-    CASE 
-        WHEN random() < 0.60 THEN '2026-01-01'::DATE + (random() * 180)::INT + 7
-        WHEN random() < 0.90 THEN '2025-01-01'::DATE + (random() * 364)::INT + 7
-        ELSE '2024-01-01'::DATE + (random() * 364)::INT + 7
-    END AS processed_date,
+    LEAST(
+        CASE
+            WHEN random() < 0.60 THEN '2026-01-01'::DATE + (random() * 180)::INT + 7
+            WHEN random() < 0.90 THEN '2025-01-01'::DATE + (random() * 364)::INT + 7
+            ELSE '2024-01-01'::DATE + (random() * 364)::INT + 7
+        END,
+        CURRENT_DATE
+    ) AS processed_date,
     CASE WHEN random() < 0.9 THEN 'Professional' ELSE 'Institutional' END,
     CASE WHEN random() < 0.92 THEN 'Paid' WHEN random() < 0.97 THEN 'Denied' ELSE 'Pending' END,
     (random() * 5000 + 100)::DECIMAL(12,2),
@@ -201,3 +204,22 @@ SELECT 'claims', COUNT(*) FROM source_oltp.claims
 UNION ALL
 SELECT 'claim_lines', COUNT(*) FROM source_oltp.claim_lines
 ORDER BY table_name;
+
+
+
+-- ---------------------------------------------------
+--  Testing purposes: SOURCE tables display
+-- ---------------------------------------------------
+-- SELECT * FROM source_oltp.plan_types
+
+-- SELECT * FROM source_oltp.diagnosis_codes
+
+-- SELECT * FROM source_oltp.procedure_codes
+
+-- SELECT * FROM source_oltp.providers
+
+-- SELECT * FROM source_oltp.provider_network_history
+
+-- SELECT * FROM source_oltp.claims
+
+-- SELECT * FROM source_oltp.claim_lines

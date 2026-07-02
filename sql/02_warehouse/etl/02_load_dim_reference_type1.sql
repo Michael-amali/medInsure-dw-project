@@ -42,3 +42,24 @@ FROM source_oltp.procedure_codes pc
 ON CONFLICT (procedure_code) DO UPDATE SET
     procedure_desc = EXCLUDED.procedure_desc,
     procedure_category = EXCLUDED.procedure_category;
+
+
+
+
+-- Testing purposes
+-- SET search_path TO dw;
+
+-- SELECT * FROM dw.dim_plan 
+-- SELECT * FROM dw.dim_diagnosis 
+-- SELECT * FROM dw.dim_procedure 
+
+
+
+-- Testing SCD Type 1
+-- UPDATE source_oltp.procedure_codes
+-- SET description = 'Radiology updated'
+-- WHERE procedure_code = '71098';
+
+-- Execute the UPDATE command above
+-- Then run the INSERT command to the dw
+-- Then check the result using SELECT

@@ -19,3 +19,12 @@ CREATE UNIQUE INDEX idx_mv_monthly_claims_summary
     ON dw.mv_monthly_claims_summary(year_month);
 
 REFRESH MATERIALIZED VIEW CONCURRENTLY dw.mv_monthly_claims_summary;
+
+
+
+
+-- EXPLAIN ANALYZE AFTER materialized view (run after sql/05_optimization/materialized_views.sql)
+EXPLAIN ANALYZE
+SELECT year_month, claim_count, total_paid 
+FROM dw.mv_monthly_claims_summary 
+WHERE year_month >= '2024-01';

@@ -76,3 +76,35 @@ BEGIN
         RAISE EXCEPTION 'SCD2 violation: provider has multiple current rows';
     END IF;
 END $$;
+
+
+
+
+-- Testing purposes
+-- SET search_path TO dw, source_oltp, public;
+
+-- SELECT * FROM source_oltp.providers
+-- SELECT * FROM dw.dim_provider
+
+
+-- -- -- Testing SCD Type 2
+-- UPDATE source_oltp.providers
+-- SET specialty = 'General Medicine myk',
+--     updated_at = CURRENT_TIMESTAMP
+-- WHERE provider_id = 'P000007';
+
+-- -- -- Execute the UPDATE command above
+-- -- -- Then run the INSERT command to staging, update and insert commands
+-- -- -- Then run the SELECT command below to see the two rows, current and old
+
+-- SELECT
+--     provider_id,
+--     provider_name,
+--     specialty,
+--     network_status,
+--     effective_start,
+--     effective_end,
+--     is_current
+-- FROM dw.dim_provider
+-- WHERE provider_id = 'P000007'
+-- ORDER BY effective_start;

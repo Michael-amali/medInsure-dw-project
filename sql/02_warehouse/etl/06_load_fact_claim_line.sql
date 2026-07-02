@@ -31,3 +31,10 @@ WHERE NOT EXISTS (
     SELECT 1 FROM dw.fact_claim_line fcl 
     WHERE fcl.claim_id = cl.claim_id AND fcl.claim_line_number = cl.line_number
 );
+
+
+-- Testing purposes
+-- SET search_path TO dw, source_oltp, public;
+
+-- SELECT * FROM source_oltp.claim_lines
+-- SELECT * FROM dw.fact_claim_line

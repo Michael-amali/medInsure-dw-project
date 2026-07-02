@@ -83,3 +83,11 @@ BEGIN
     
     DROP TABLE stg_fact_claim;
 END $$;
+
+
+-- Testing purposes
+-- SET search_path TO dw, source_oltp, public;
+
+-- SELECT * FROM source_oltp.claims
+-- SELECT * FROM dw.fact_claim
+-- SELECT * FROM dw.dlq_claim_load

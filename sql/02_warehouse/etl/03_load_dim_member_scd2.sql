@@ -89,3 +89,35 @@ BEGIN
         RAISE EXCEPTION 'SCD2 violation: member has multiple current rows';
     END IF;
 END $$;
+
+
+
+-- Testing purposes
+-- SET search_path TO dw, source_oltp, public;
+
+-- SELECT * FROM source_oltp.members
+-- SELECT * FROM dw.dim_member
+
+
+
+-- -- Testing SCD Type 2
+-- UPDATE source_oltp.members
+-- SET state = 'JK',
+--     zip_code = '15151',
+--     updated_at = CURRENT_TIMESTAMP
+-- WHERE member_id = 'M0000005';
+
+-- -- Execute the UPDATE command above
+-- -- Then run the INSERT command to staging, update and insert commands
+-- -- Then run the SELECT command below to see the two rows, current and old
+
+-- SELECT
+--     member_id,
+--     state,
+--     zip_code,
+--     effective_start,
+--     effective_end,
+--     is_current
+-- FROM dw.dim_member
+-- WHERE member_id = 'M0000005'
+-- ORDER BY effective_start;

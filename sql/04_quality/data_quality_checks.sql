@@ -19,7 +19,7 @@ WITH dq_checks AS (
         COUNT(*) AS total_rows,
         SUM(CASE WHEN date_key > 0 AND member_key > 0 AND provider_key > 0 THEN 1 ELSE 0 END) AS passed,
         SUM(CASE WHEN date_key <= 0 OR member_key <= 0 OR provider_key <= 0 THEN 1 ELSE 0 END) AS failed
-    FROM fact_claim
+    FROM dw.fact_claim
 
     UNION ALL
 
@@ -29,7 +29,7 @@ WITH dq_checks AS (
         COUNT(*),
         SUM(CASE WHEN total_paid <= total_allowed * 1.05 THEN 1 ELSE 0 END),
         SUM(CASE WHEN total_paid > total_allowed * 1.05 THEN 1 ELSE 0 END)
-    FROM fact_claim
+    FROM dw.fact_claim
     WHERE claim_status = 'Paid'
 
     UNION ALL
@@ -42,7 +42,7 @@ WITH dq_checks AS (
         COUNT(DISTINCT member_id) FILTER (WHERE cnt > 1)
     FROM (
         SELECT member_id, COUNT(*) AS cnt 
-        FROM dim_member 
+        FROM dw.dim_member 
         WHERE is_current = TRUE 
         GROUP BY member_id
     ) t
@@ -57,7 +57,7 @@ WITH dq_checks AS (
         COUNT(DISTINCT provider_id) FILTER (WHERE cnt > 1)
     FROM (
         SELECT provider_id, COUNT(*) AS cnt 
-        FROM dim_provider 
+        FROM dw.dim_provider 
         WHERE is_current = TRUE 
         GROUP BY provider_id
     ) t
@@ -70,8 +70,8 @@ WITH dq_checks AS (
         COUNT(*),
         SUM(CASE WHEN fc.claim_key IS NOT NULL THEN 1 ELSE 0 END),
         SUM(CASE WHEN fc.claim_key IS NULL THEN 1 ELSE 0 END)
-    FROM fact_claim_line fcl
-    LEFT JOIN fact_claim fc ON fcl.claim_key = fc.claim_key
+    FROM dw.fact_claim_line fcl
+    LEFT JOIN dw.fact_claim fc ON fcl.claim_key = fc.claim_key
 
     UNION ALL
 
@@ -81,8 +81,8 @@ WITH dq_checks AS (
         COUNT(*),
         SUM(CASE WHEN dp.procedure_key != -1 THEN 1 ELSE 0 END),
         SUM(CASE WHEN dp.procedure_key = -1 THEN 1 ELSE 0 END)
-    FROM fact_claim_line fcl
-    JOIN dim_procedure dp ON fcl.procedure_key = dp.procedure_key
+    FROM dw.fact_claim_line fcl
+    JOIN dw.dim_procedure dp ON fcl.procedure_key = dp.procedure_key
 
     UNION ALL
 
@@ -92,8 +92,8 @@ WITH dq_checks AS (
         COUNT(*),
         SUM(CASE WHEN fc.service_date >= dp.effective_start THEN 1 ELSE 0 END),
         SUM(CASE WHEN fc.service_date < dp.effective_start THEN 1 ELSE 0 END)
-    FROM fact_claim fc
-    JOIN dim_provider dp ON fc.provider_key = dp.provider_key
+    FROM dw.fact_claim fc
+    JOIN dw.dim_provider dp ON fc.provider_key = dp.provider_key
 )
 SELECT 
     check_name,
@@ -107,6 +107,8 @@ SELECT
     END AS status
 FROM dq_checks
 ORDER BY check_name;
+
+
 
 
 -- Supplemental: DLQ error summary (last 7 days)

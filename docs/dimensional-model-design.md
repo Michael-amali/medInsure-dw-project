@@ -1,40 +1,33 @@
-# Dimensional Model Design
+# Deliverable 1: Dimensional Model Design
 
-> **Status:** Placeholder — content to be authored for Deliverable 1.
+## Grain Declarations
 
-This document will describe the MedInsure analytics star schema including:
+- **fact_claim:** One row per claim header (one row per visit/encounter).
+- **fact_claim_line:** One row per claim service line (one row per individual service/procedure within a claim).
 
-- Grain declaration for `fact_claim` and `fact_claim_line`
-- Dimension list with SCD type decisions and justifications
-- Fact table type classification (transaction / periodic snapshot / accumulating snapshot)
-- Conformed dimensions shared with a future `fact_pharmacy` table
-- Degenerate dimension identification
+## Dimensions and SCD Decisions
 
-## Fact Tables
+- **dim_date:** Type 0 (static calendar). No history needed; supports all date-based analysis.
+- **dim_member:** SCD Type 2. Tracks changes to `plan_id`, `state`, `zip_code` over time. Justification: Member enrollment and plan changes must be accurately attributed to the service date for compliance and utilization analysis.
+- **dim_provider:** SCD Type 2. Tracks `network_status` and `specialty` changes. Justification: Network status affects reimbursement and out-of-network reporting; historical accuracy required for contract reviews.
+- **dim_diagnosis:** SCD Type 1. ICD-10 codes rarely change; overwrite description/category. Justification: Reference data; no need for history.
+- **dim_procedure:** SCD Type 1. CPT codes rarely change. Justification: Reference data.
+- **dim_plan:** SCD Type 1. Plan attributes (deductible, OOP max, plan type). Justification: Slow-changing reference; Type 1 sufficient.
+- **Conformed dimension:** `dim_date` and `dim_plan` (plan type shared with future `fact_pharmacy`).
 
-### fact_claim
+## Fact Table Classifications
 
-_Grain: one row per claim header._
-
-### fact_claim_line
-
-_Grain: one row per service line within a claim._
-
-## Dimensions
-
-| Dimension | SCD Type | Tracks / Notes |
-|-----------|----------|----------------|
-| dim_date | N/A | Calendar 2020–2030 |
-| dim_member | Type 2 | plan_id, state, zip_code |
-| dim_provider | Type 2 | network_status, specialty |
-| dim_diagnosis | Type 1 | ICD-10 reference |
-| dim_procedure | Type 1 | CPT/HCPCS reference |
-| dim_plan | Type 1 | Plan attributes (deductible, OOP max) |
-
-## Conformed Dimensions
-
-_TBD: identify dimensions shared with future fact_pharmacy._
+- **fact_claim:** Transaction fact. Captures each claim event at the point it occurs. Justification: Claims are discrete events with measures like paid/allowed amounts.
+- **fact_claim_line:** Transaction fact (line-level detail). Justification: Detailed cost and service metrics per line.
 
 ## Degenerate Dimensions
 
-_TBD: claim_id, claim_line_number._
+- **claim_id** (in `fact_claim`): Natural key for auditing/reference, not a dimension.
+- **claim_line_id** or line sequence (in `fact_claim_line`).
+
+## Additional Design Notes
+
+- Surrogate keys (SERIAL or BIGSERIAL) for all dims.
+- SCD Type 2 dims include effective_start, effective_end, is_current.
+- NA row (-1) for dimensions.
+- Indexes on FKs in facts.
