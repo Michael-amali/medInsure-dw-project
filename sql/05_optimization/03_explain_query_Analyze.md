@@ -1,3 +1,4 @@
+```text
 Sort  (cost=1234.56..1235.06 rows=24 width=64) (actual time=32.456..32.461 rows=24 loops=1)
   Sort Key: monthly_vol.year_month
   ->  WindowAgg  (cost=1233.45..1234.05 rows=24 width=64) (actual time=32.345..32.440 rows=24 loops=1)
@@ -13,6 +14,7 @@ Sort  (cost=1234.56..1235.06 rows=24 width=64) (actual time=32.456..32.461 rows=
                                 ->  Seq Scan on dim_date d  (cost=0.00..45.67 rows=730 width=8) (actual time=0.011..1.234 rows=730 loops=1)
                                       Filter: (full_date >= (CURRENT_DATE - '2 years'::interval))
 Execution Time: 32.678 ms
+```
 
 
 

@@ -1,3 +1,4 @@
+```text
 Limit  (cost=1847.23..1847.28 rows=20 width=112) (actual time=47.892..47.897 rows=20 loops=1)
   ->  Sort  (cost=1847.23..1851.48 rows=1700 width=112) (actual time=47.891..47.894 rows=20 loops=1)
         Sort Key: (sum(fc.total_paid)) DESC
@@ -18,6 +19,7 @@ Limit  (cost=1847.23..1847.28 rows=20 width=112) (actual time=47.892..47.897 row
                           ->  Seq Scan on dim_provider dp  (cost=0.00..45.67 rows=1700 width=44) (actual time=0.009..0.567 rows=1700 loops=1)
 Planning Time: 1.234 ms
 Execution Time: 48.123 ms
+```
 
 
 
