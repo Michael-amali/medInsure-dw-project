@@ -42,5 +42,5 @@ SELECT
         ELSE NULL 
     END AS threshold_flag
 FROM with_running_total
-WHERE ytd_cumulative_paid > 500000  -- Filter after window calc
+WHERE ytd_cumulative_paid > 150000  -- Filter after window calc
 ORDER BY provider_name, full_date;
