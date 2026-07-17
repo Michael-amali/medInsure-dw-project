@@ -6,10 +6,11 @@ SET search_path TO dw, source_oltp, public;
 
 DO $$
 DECLARE
-    v_hwm TIMESTAMP;
+    v_hwm DATE;
     v_rows_loaded INT;
 BEGIN
-    SELECT COALESCE(MAX(etl_loaded_at), '1970-01-01') INTO v_hwm FROM dw.fact_claim;
+    SELECT COALESCE(MAX(etl_loaded_at::DATE), '1970-01-01') INTO v_hwm 
+    FROM dw.fact_claim;
 
     -- Stage claims with lookups
     CREATE TEMP TABLE stg_fact_claim AS
